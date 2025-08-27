@@ -13,6 +13,8 @@ from email.message import EmailMessage
 import os
 from flask import Flask
 
+
+
 app = Flask(__name__)
 
 # Excel file for logs
@@ -54,7 +56,20 @@ if __name__ == "__main__":
     init_excel()
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
-    
+
+
+
+# PyQt5 UI
+from PyQt5.QtWidgets import (
+    QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
+    QLabel, QPushButton, QLineEdit, QComboBox, QMessageBox,
+    QTableWidget, QTableWidgetItem, QDialog, QFileDialog,
+    QStackedWidget, QFrame, QSpacerItem, QSizePolicy, QTextEdit,
+    QFormLayout, QSpinBox
+)
+from PyQt5.QtCore import Qt, pyqtSignal, QTimer
+from PyQt5.QtGui import QFont
+
 # Flask for phone registration
 from flask import Flask, request, render_template_string, send_from_directory
 
