@@ -13,6 +13,48 @@ from email.message import EmailMessage
 import os
 from flask import Flask
 
+app = Flask(__name__)
+
+# Excel file for logs
+FILENAME = "attendance.xlsx"
+
+def init_excel():
+    if not os.path.exists(FILENAME):
+        wb = Workbook()
+        ws = wb.active
+        ws.append(["Name", "Date", "Time"])
+        wb.save(FILENAME)
+
+@app.route("/")
+def home():
+    return "✅ Church QR Attendance System is LIVE on Railway!"
+
+@app.route("/scan", methods=["POST"])
+def scan_qr():
+    # placeholder: simulate QR scan (since Railway has no webcam access)
+    qr_data = request.json.get("qr_data", "Unknown")
+    now = datetime.now()
+    record = [qr_data, now.strftime("%Y-%m-%d"), now.strftime("%H:%M:%S")]
+
+    wb = load_workbook(FILENAME)
+    ws = wb.active
+    ws.append(record)
+    wb.save(FILENAME)
+
+    return jsonify({"status": "success", "recorded": record})
+
+@app.route("/records")
+def show_records():
+    wb = load_workbook(FILENAME)
+    ws = wb.active
+    data = [[cell.value for cell in row] for row in ws.iter_rows()]
+    return jsonify(data)
+
+if __name__ == "__main__":
+    init_excel()
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
+    
 # Flask for phone registration
 from flask import Flask, request, render_template_string, send_from_directory
 
